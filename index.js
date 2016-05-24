@@ -2,8 +2,8 @@
 (function() {
   var FractalController, canvas, clearCanvas, context, drawBranch;
 
-  drawBranch = function(context, branchWidth, branchLength, branchOriginX, branchOriginY, branchAngle) {
-    var branchEndX, branchEndY, childBranchLength, childBranchWidth;
+  drawBranch = function(context, levelsRemaining, branchWidth, branchLength, branchOriginX, branchOriginY, branchAngle) {
+    var branchEndX, branchEndY;
     context.beginPath();
     context.moveTo(branchOriginX, branchOriginY);
     branchEndX = branchOriginX + Math.cos(branchAngle) * branchLength;
@@ -11,11 +11,9 @@
     context.lineWidth = branchWidth;
     context.lineTo(branchEndX, branchEndY);
     context.stroke();
-    if (branchWidth >= 0.5) {
-      childBranchWidth = branchWidth * 0.75;
-      childBranchLength = branchLength * 0.75;
-      drawBranch(context, childBranchWidth, childBranchLength, branchEndX, branchEndY, branchAngle + Math.PI / 6);
-      return drawBranch(context, childBranchWidth, childBranchLength, branchEndX, branchEndY, branchAngle - Math.PI / 6);
+    if (levelsRemaining > 0) {
+      drawBranch(context, levelsRemaining - 1, branchWidth * 0.75, branchLength * 0.75, branchEndX, branchEndY, branchAngle + Math.PI / 6);
+      return drawBranch(context, levelsRemaining - 1, branchWidth * 0.75, branchLength * 0.75, branchEndX, branchEndY, branchAngle - Math.PI / 6);
     }
   };
 
@@ -28,13 +26,14 @@
   context = canvas.getContext('2d');
 
   FractalController = function($scope) {
-    $scope.fractalOptions = {};
-    $scope.fractalOptions.trunkWidth = 10;
-    $scope.fractalOptions.trunkLength = 90;
+    $scope.fractalOptions = {
+      trunkWidth: 10,
+      trunkLength: 90,
+      levels: 10
+    };
     $scope.drawImage = function() {
       clearCanvas(canvas, context);
-      drawBranch(context, $scope.fractalOptions.trunkWidth, $scope.fractalOptions.trunkLength, canvas.width / 2, canvas.height, -Math.PI / 2);
-      return console.log("Drawing finished");
+      return drawBranch(context, $scope.fractalOptions.levels, $scope.fractalOptions.trunkWidth, $scope.fractalOptions.trunkLength, canvas.width / 2, canvas.height, -Math.PI / 2);
     };
     return $scope.drawImage();
   };

@@ -22,6 +22,10 @@
         layout-sm='column'
         layout-align='center center'>
         <canvas id='canvas'></canvas>
+        <md-input-container>
+            <label>Number of levels</label>
+            <input type='number' ng-model='fractalOptions.levels' ng-change='drawImage()'>
+        </md-input-container>
     </section>
     <script src='index.js'></script>
 </body>
