@@ -29,9 +29,11 @@
     $scope.fractalOptions = {
       trunkWidth: 10,
       trunkLength: 90,
-      levels: 10
+      levels: 10,
+      branchesCount: Math.pow(2, 10)
     };
     $scope.drawImage = function() {
+      $scope.fractalOptions.branchesCount = Math.pow(2, $scope.fractalOptions.levels);
       clearCanvas(canvas, context);
       return drawBranch(context, $scope.fractalOptions.levels, $scope.fractalOptions.trunkWidth, $scope.fractalOptions.trunkLength, canvas.width / 2, canvas.height, -Math.PI / 2);
     };

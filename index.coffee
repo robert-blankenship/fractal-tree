@@ -22,8 +22,11 @@ FractalController = ($scope) ->
         trunkWidth: 10
         trunkLength: 90
         levels: 10
+        branchesCount: Math.pow(2, 10)
     
     $scope.drawImage = ->
+        $scope.fractalOptions.branchesCount = Math.pow(2, $scope.fractalOptions.levels)
+
         clearCanvas(canvas, context)
         drawBranch(
             context,
